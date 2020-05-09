@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <meta name="theme-color" content="#222831">
+  <link rel='manifest' href='./manifest.json'>
+</head>
+<body>
+  <div class="hero">
+    <h1>Twotter</h1>
+    <h2>Like Twitter but worse.</h2>
+    <div id="status"></div>
+    <button id="unsubscribe">unsubscribe</button>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAm_huj1Z2UQORza1NFAtQjF7yi_lPYBiU",
+      authDomain: "twotter-app.firebaseapp.com",
+      databaseURL: "https://twotter-app.firebaseio.com",
+      projectId: "twotter-app",
+      storageBucket: "twotter-app.appspot.com",
+      messagingSenderId: "833362549045",
+      appId: "1:833362549045:web:867a9b7d2f7d2b4367547c",
+      measurementId: "G-EJHW769W4N"
+    };
+    firebase.initializeApp(config);
+    firebase.analytics();
+  </script>
+  <script>
+     if("serviceWorker" in navigator) {
+       navigator.serviceWorker.register("/sw.js")
+         .then(function() {
+               console.log("Service Worker Registered");
+         });
+     }
+   </script>
+</body>
