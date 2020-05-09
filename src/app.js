@@ -78,7 +78,6 @@ postForm.addEventListener("submit", event => {
     const text = postInput.value;
     name = auth.currentUser.displayName;
     email = auth.currentUser.email;
-    console.log(auth.currentUser);
 
     if(!name || name == null){
         return alert('Debes ingresar a tu cuenta');
@@ -102,7 +101,7 @@ postForm.addEventListener("submit", event => {
 });
 
 const updatePost = data => {
-
+    //if (data.date === null) data.date = 
     const post = `<div class="tweet-header">
                     <img src="https://pbs.twimg.com/profile_images/1012717264108318722/9lP-d2yM_400x400.jpg" alt="" class="avator">
                     <div class="tweet-header-info">
@@ -113,10 +112,18 @@ const updatePost = data => {
     tweets.insertAdjacentHTML("afterBegin", post);
 }
 
-db.collection("posts").onSnapshot(function(querySnapshot) {
-    //var posts = [];
-    querySnapshot.forEach(function(doc) {
-        //posts.push(doc.data());
-        updatePost(doc.data());
-    });  
+db.collection("posts").orderBy('date', 'asc')
+.onSnapshot(function(snapshot) {
+    snapshot.docChanges().forEach(function(change) {
+        if (change.type === "added") {
+            console.log("Added post: ", change.doc.data());
+            updatePost(change.doc.data());
+        }
+        if (change.type === "modified") {
+            console.log("Modified post: ", change.doc.data());
+        }
+        if (change.type === "removed") {
+            console.log("Removed post: ", change.doc.data());
+        }
+    });
 });

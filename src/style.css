@@ -177,3 +177,20 @@ img {
     }
 
   }
+
+  /* 
+  https://codepen.io/gabosvs/pen/oMyaaZ
+   */
+.button {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: #00acee;
+  color: #FFF;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 30px;
+  z-index: 100;
+}
