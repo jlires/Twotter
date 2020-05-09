@@ -2,7 +2,9 @@ var cacheName = 'twotter';
 var CACHE_FILES = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/style.css',
+  'app.js'
 ];
 
 self.addEventListener('install', function(e) {

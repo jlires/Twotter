@@ -3,38 +3,58 @@
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <meta name="theme-color" content="#222831">
   <link rel='manifest' href='./manifest.json'>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script src="/__/firebase/7.14.3/firebase-app.js"></script>
+  <script src="/__/firebase/7.14.3/firebase-auth.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="/__/firebase/7.14.3/firebase-analytics.js"></script>
+
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
 </head>
 <body>
-  <div class="hero">
-    <h1>Twotter</h1>
-    <h2>Like Twitter but worse.</h2>
-    <div id="status"></div>
-    <button id="unsubscribe">unsubscribe</button>
-  </div>
-  <script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyAm_huj1Z2UQORza1NFAtQjF7yi_lPYBiU",
-      authDomain: "twotter-app.firebaseapp.com",
-      databaseURL: "https://twotter-app.firebaseio.com",
-      projectId: "twotter-app",
-      storageBucket: "twotter-app.appspot.com",
-      messagingSenderId: "833362549045",
-      appId: "1:833362549045:web:867a9b7d2f7d2b4367547c",
-      measurementId: "G-EJHW769W4N"
-    };
-    firebase.initializeApp(config);
-    firebase.analytics();
-  </script>
-  <script>
-     if("serviceWorker" in navigator) {
-       navigator.serviceWorker.register("/sw.js")
-         .then(function() {
-               console.log("Service Worker Registered");
-         });
-     }
-   </script>
+  <button id="signWithGoogle">Login with google</button>
+  <button id='signOutGoogle'>LogOut of google</button>
+
+    <div id="tweet-wrap">
+      <div class="tweet-header">
+        <img src="https://pbs.twimg.com/profile_images/1012717264108318722/9lP-d2yM_400x400.jpg" alt="" class="avator">
+        <div class="tweet-header-info">
+          Steve Schoger <span>@Steve Schoger</span><span>. Jun 27
+    </span>
+          <p>🔥 If you're tired of using outline styles for secondary buttons, a soft solid background based on the text color can be a great alternative.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="board">
+      <div class="board-windows">
+        <ul id="posted">
+        </ul>
+        <form id="postform">
+          <input type="text" id="post-input"> <!-- disabled> -->
+          <button id="post-btn"><!-- disabled> -->Post</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
+
+    <script>
+       if("serviceWorker" in navigator) {
+         navigator.serviceWorker.register("/sw.js")
+           .then(function() {
+                 console.log("Service Worker Registered");
+           });
+       }
+     </script>
+
+    <script src="app.js"></script>
+
 </body>
