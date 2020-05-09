@@ -78,6 +78,8 @@ postForm.addEventListener("submit", event => {
     const text = postInput.value;
     name = auth.currentUser.displayName;
     email = auth.currentUser.email;
+    userImage = auth.currentUser.photoURL;
+    console.log(auth);
 
     if(!name || name == null){
         return alert('Debes ingresar a tu cuenta');
@@ -87,6 +89,7 @@ postForm.addEventListener("submit", event => {
         date: firebase.firestore.FieldValue.serverTimestamp(),
         name: name,
         email: email,
+        userImage: userImage,
         text: text
     }
 
@@ -103,7 +106,7 @@ postForm.addEventListener("submit", event => {
 const updatePost = data => {
     //if (data.date === null) data.date = 
     const post = `<div class="tweet-header">
-                    <img src="https://pbs.twimg.com/profile_images/1012717264108318722/9lP-d2yM_400x400.jpg" alt="" class="avator">
+                    <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
                       ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
                       <p>${data.text}</p>
