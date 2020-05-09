@@ -4,7 +4,7 @@ var CACHE_FILES = [
   '/index.html',
   '/manifest.json',
   '/style.css',
-  'app.js'
+  '/app.js'
 ];
 
 self.addEventListener('install', function(e) {
