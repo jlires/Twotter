@@ -69,41 +69,141 @@ const postScreen = document.getElementById('posted');
 const postForm = document.getElementById('postform');
 const postInput = document.getElementById('post-input');
 const postBtn = document.getElementById('post-btn');
-const tweets = document.getElementById('tweet-wrap');
+const tweets = document.getElementById('all');
+const uploadImage = document.getElementById('cover');
+const storage = firebase.storage();
+const storageRef = storage.ref();
 
 const postRef = db.collection('posts');
 
-postForm.addEventListener("submit", event => {
+postForm.addEventListener("submit", async(event) => {
     event.preventDefault();
     const text = postInput.value;
     name = auth.currentUser.displayName;
     email = auth.currentUser.email;
     userImage = auth.currentUser.photoURL;
+    upImage= uploadImage.files[0];
+    console.log(upImage);
     console.log(auth);
 
     if(!name || name == null){
         return alert('Debes ingresar a tu cuenta');
     } else if (!text.trim()) return alert('Debes escribir algo en el post');
 
-    const post = {
-        date: firebase.firestore.FieldValue.serverTimestamp(),
-        name: name,
-        email: email,
-        userImage: userImage,
-        text: text
-    }
+    if (upImage == undefined) {
+        const post = {
+            date: firebase.firestore.FieldValue.serverTimestamp(),
+            name: name,
+            email: email,
+            userImage: userImage,
+            text: text
+        }
+    
+        postRef.add(post)
+        .then(function(docRef){
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+        postInput.value = '';
 
-    postRef.add(post)
-    .then(function(docRef){
-        console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });
-    postInput.value = '';
+    } else {
+       /*  https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
+            const storageChild = storageRef.child(upImage.name);
+            const postImage = storageChild.put(upImage); 
+            
+            await new Promise((resolve) => {
+                postImage.on("state_changed", (snapshot) => {
+
+                }, (error) => {
+                    console.log(error);
+                }, async() => {
+                    const downloadURL =  await storageChild.getDownloadURL();
+                    downloadFile = downloadURL;
+                    console.log(downloadFile);
+                    resolve();
+                });
+            });
+
+            const fileRef = await firebase.storage().refFromURL(downloadFile);
+
+
+            const post = {
+                date: firebase.firestore.FieldValue.serverTimestamp(),
+                name: name,
+                email: email,
+                userImage: userImage,
+                text: text,
+                uploadImage: downloadFile,
+                fileref: fileRef.location.path  
+            }
+
+            await postRef.add(post)
+            .then(function(docRef){
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
+            });
+            
+            postInput.value = '';
+            uploadImage.value = '';
+}
 });
 
-const updatePost = data => {
+
+/* 
+const getPosts = async() =>{
+    let postArray = [];
+    let docs = await postRef.get().catch(err => console.log(err));
+    docs.forEach(doc => {
+        postArray.push({"id": doc.id, "data": doc.data()});
+    });
+
+    createChildren(postArray);
+}; */
+/* 
+https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
+const createChildren = (data) => {
+    if (tweets != null) {
+            if (data.uploadImage == undefined ){
+                const posted = `
+                
+                <div id="tweet-wrap">
+                <div class="tweet-header">
+                    <img src="${data.userImage}" alt="" class="avator">
+                    <div class="tweet-header-info">
+                      ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
+                      <p>${data.text}</p>
+                    </div>
+                    </div>
+                  </div>`
+                tweets.insertAdjacentHTML("afterBegin", posted);
+            }
+            else{
+                const posted = `
+                <div id="tweet-wrap">
+                <div class="tweet-header">
+                    <img src="${data.userImage}" alt="" class="avator">
+                    <div class="tweet-header-info">
+                      ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
+                      <p>${data.text}</p>
+                      <img src="${data.uploadImage}" style="width: 300px; height: 300px;"/>
+                    </div>
+                    </div>
+                  </div>`
+                tweets.insertAdjacentHTML("afterBegin", posted);
+
+            }
+        };
+};
+
+
+
+
+
+/* const updatePost = data => {
     //if (data.date === null) data.date = 
     const post = `<div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
@@ -114,13 +214,13 @@ const updatePost = data => {
                   </div>`
     tweets.insertAdjacentHTML("afterBegin", post);
 }
-
-db.collection("posts").orderBy('date', 'asc')
+ */
+db.collection("posts")
 .onSnapshot(function(snapshot) {
     snapshot.docChanges().forEach(function(change) {
         if (change.type === "added") {
             console.log("Added post: ", change.doc.data());
-            updatePost(change.doc.data());
+            createChildren(change.doc.data());
         }
         if (change.type === "modified") {
             console.log("Modified post: ", change.doc.data());
