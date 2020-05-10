@@ -65,14 +65,34 @@ signOutWithGoogleButton.addEventListener('click', signOutWithGoogle);
 
 
 //* Post messages *//
-const postScreen = document.getElementById('posted');
 const postForm = document.getElementById('postform');
 const postInput = document.getElementById('post-input');
 const postBtn = document.getElementById('post-btn');
+const publishBtn = document.getElementById('botonF1');
+const exitBtn = document.getElementById('botonF2');
+const formPublish = document.getElementById('formpost');
 const tweets = document.getElementById('all');
 const uploadImage = document.getElementById('cover');
 const storage = firebase.storage();
 const storageRef = storage.ref();
+
+const processPublish = () =>{
+    console.log('me hiciste click');
+    publishBtn.style.display = 'none';
+    formPublish.style.display = 'block';
+};
+
+const closePublish = () =>{
+    console.log('Me cerraste man');
+    publishBtn.style.display = 'block';
+    formPublish.style.display = 'none';
+    postInput.value = '';
+    uploadImage.value = '';
+};
+
+publishBtn.addEventListener('click', processPublish);
+exitBtn.addEventListener('click', closePublish);
+
 
 const postRef = db.collection('posts');
 
@@ -85,6 +105,7 @@ postForm.addEventListener("submit", async(event) => {
     upImage= uploadImage.files[0];
     console.log(upImage);
     console.log(auth);
+
 
     if(!name || name == null){
         return alert('Debes ingresar a tu cuenta');
@@ -150,6 +171,8 @@ postForm.addEventListener("submit", async(event) => {
             postInput.value = '';
             uploadImage.value = '';
 }
+    publishBtn.style.display = 'block';
+    formPublish.style.display = 'none';
 });
 
 
@@ -215,7 +238,7 @@ const createChildren = (data) => {
     tweets.insertAdjacentHTML("afterBegin", post);
 }
  */
-db.collection("posts")
+db.collection("posts").orderBy('date', 'asc')
 .onSnapshot(function(snapshot) {
     snapshot.docChanges().forEach(function(change) {
         if (change.type === "added") {
