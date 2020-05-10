@@ -16,7 +16,9 @@
   <script src="/__/firebase/init.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-storage.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+  
 </head>
 <body>
   <button id="signWithGoogle">Login with google</button>
@@ -26,14 +28,13 @@
       <div class="board-windows">
         <form id="postform">
           <input type="text" id="post-input"> <!-- disabled> -->
+          <input type="file" id="cover">
           <button id="post-btn"><!-- disabled> -->Post</button>
         </form>
       </div>
     </div>
-
-    <div id="tweet-wrap">
-    </div>
-
+    <div id="all">
+  </div>
     <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
 
     <script>

@@ -132,10 +132,9 @@ img {
     margin: 0 auto;
     margin-top: 50px;
     border-radius:3px;
-    padding: 30px;
+    padding: 10px;
     border-bottom: 1px solid #e6ecf0;
     border-top: 1px solid #e6ecf0;
-    overflow-y: scroll;
   }
 
   .tweet-header {
