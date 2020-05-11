@@ -49,13 +49,11 @@ const signWithGoogle = () =>{
     .catch(function(e) {
         console.log(e);
     })
-    console.log('te loggee');
 }
 
 const signOutWithGoogle = () =>{
     auth.signOut().then(function() {
         name = '';
-        verification();
         // Sign-out successful.
       }).catch(function(error) {
         // An error happened.
@@ -98,16 +96,16 @@ publishBtn.addEventListener('click', processPublish);
 exitBtn.addEventListener('click', closePublish);
 
 const verification = () => {
-    console.log('wena', auth.currentUser);
-    if (auth.currentUser == null) {
+    console.log("Entramos a VERIFICATION");
+    if (auth.currentUser === null) {
+        console.log('No hay currentUser');
         publishBtn.style.display = 'none';
         signOutWithGoogleButton.style.display = 'none';
-        console.log('no está loggeado');
     }
     else {
+        console.log("currentUser: ", auth.currentUser.displayName);
         publishBtn.style.display = 'block';
         signOutWithGoogleButton.style.display = 'block';
-        console.log('te logeaste');
     }
 };
 
@@ -256,6 +254,20 @@ const createChildren = (data) => {
     tweets.insertAdjacentHTML("afterBegin", post);
 }
  */
+
+auth.onAuthStateChanged((user) => {
+    console.log("-- Auth state changed ...");
+    verification();
+    if (user) {
+      // User signed in, you can get redirect result here if needed.
+      // ...
+      console.log("-- Estamos loggeados!");
+      // ....
+    } else {
+      console.log("-- No hay nadie loggeado!");
+    }
+  });
+
 db.collection("posts").orderBy('date', 'asc')
 .onSnapshot(function(snapshot) {
     snapshot.docChanges().forEach(function(change) {
@@ -271,5 +283,3 @@ db.collection("posts").orderBy('date', 'asc')
         }
     });
 });
-
-verification();

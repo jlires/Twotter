@@ -134,6 +134,7 @@ img {
   margin-bottom:16px;
   font-size:36px;
   border: none;
+  z-index: 2;
 }
 
 #botonF2 {
@@ -195,5 +196,20 @@ img {
 }
 
 #signOutGoogle{
+  position: relative;
+  height: 80%;
   display: none;
+  padding: 5px;
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10%;
+  height: 10%;
+  display: flex;
+  background-color: black;
+  align-items: center;
+  justify-content: center;
 }
