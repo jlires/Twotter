@@ -36,16 +36,18 @@ firebase.firestore().enablePersistence()
 
 var name;
 
-
 //* Google Auth *//
 const auth = firebase.auth();
 
+
 const signWithGoogle = () =>{
     const googleProvider =  new firebase.auth.GoogleAuthProvider();
-
     auth.signInWithRedirect(googleProvider)
-    .then(()=> {
-        console.log('loggeado');
+    .then(function() {
+        console.log("- - - Loggeado - - - - ");
+    })
+    .catch(function(e) {
+        console.log(e);
     })
 }
 
@@ -93,6 +95,21 @@ const closePublish = () =>{
 publishBtn.addEventListener('click', processPublish);
 exitBtn.addEventListener('click', closePublish);
 
+const verification = () => {
+    console.log("Entramos a VERIFICATION");
+    if (auth.currentUser === null) {
+        console.log('No hay currentUser');
+        publishBtn.style.display = 'none';
+        signOutWithGoogleButton.style.display = 'none';
+    }
+    else {
+        console.log("currentUser: ", auth.currentUser.displayName);
+        publishBtn.style.display = 'block';
+        signOutWithGoogleButton.style.display = 'block';
+    }
+};
+
+
 
 const postRef = db.collection('posts');
 
@@ -105,6 +122,7 @@ postForm.addEventListener("submit", async(event) => {
     upImage= uploadImage.files[0];
     console.log(upImage);
     console.log(auth);
+    console.log(firebase.firestore.FieldValue.serverTimestamp());
 
 
     if(!name || name == null){
@@ -193,7 +211,7 @@ const createChildren = (data) => {
             if (data.uploadImage == undefined ){
                 const posted = `
                 
-                <div id="tweet-wrap">
+                <div class="tweet-wrap">
                 <div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
@@ -206,7 +224,7 @@ const createChildren = (data) => {
             }
             else{
                 const posted = `
-                <div id="tweet-wrap">
+                <div class="tweet-wrap">
                 <div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
@@ -224,8 +242,6 @@ const createChildren = (data) => {
 
 
 
-
-
 /* const updatePost = data => {
     //if (data.date === null) data.date = 
     const post = `<div class="tweet-header">
@@ -238,6 +254,20 @@ const createChildren = (data) => {
     tweets.insertAdjacentHTML("afterBegin", post);
 }
  */
+
+auth.onAuthStateChanged((user) => {
+    console.log("-- Auth state changed ...");
+    verification();
+    if (user) {
+      // User signed in, you can get redirect result here if needed.
+      // ...
+      console.log("-- Estamos loggeados!");
+      // ....
+    } else {
+      console.log("-- No hay nadie loggeado!");
+    }
+  });
+
 db.collection("posts").orderBy('date', 'asc')
 .onSnapshot(function(snapshot) {
     snapshot.docChanges().forEach(function(change) {

@@ -5,28 +5,18 @@
   <link rel='manifest' href='./manifest.json'>
   <link rel="stylesheet" type="text/css" href="style.css">
 
-  <script src="/__/firebase/7.14.3/firebase-app.js"></script>
-  <script src="/__/firebase/7.14.3/firebase-auth.js"></script>
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="/__/firebase/7.14.3/firebase-analytics.js"></script>
-
-  <!-- Initialize Firebase -->
-  <script src="/__/firebase/init.js"></script>
-
-  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-storage.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
-  
+  <title>Twotter</title>
 </head>
 <body>
-  <button id="signWithGoogle">Login with google</button>
-  <button id='signOutGoogle'>LogOut of google</button>
+
+ 
+  <div id='header'>
+    <button id='signOutGoogle'>LogOut of google</button>
+  </div>
   <button id="botonF1">
     +
   </button>
-  
+  <div id="content">
     <div id="formpost">
       <button id="botonF2">
         x
@@ -39,8 +29,22 @@
     </div>
     <div id="all">
   </div>
-    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
+</div>
+<div id="footer">
+  <button id="signWithGoogle">Login with google</button>
+</div>
 
+  <script src="/__/firebase/7.14.3/firebase-app.js"></script>
+  <script src="/__/firebase/7.14.3/firebase-auth.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="/__/firebase/7.14.3/firebase-analytics.js"></script>
+
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
     <script>
        if("serviceWorker" in navigator) {
          navigator.serviceWorker.register("/sw.js")
