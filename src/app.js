@@ -211,7 +211,7 @@ const createChildren = (data) => {
             if (data.uploadImage == undefined ){
                 const posted = `
                 
-                <div id="tweet-wrap">
+                <div class="tweet-wrap">
                 <div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
@@ -224,7 +224,7 @@ const createChildren = (data) => {
             }
             else{
                 const posted = `
-                <div id="tweet-wrap">
+                <div class="tweet-wrap">
                 <div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
