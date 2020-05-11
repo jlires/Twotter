@@ -36,22 +36,26 @@ firebase.firestore().enablePersistence()
 
 var name;
 
-
 //* Google Auth *//
 const auth = firebase.auth();
 
+
 const signWithGoogle = () =>{
     const googleProvider =  new firebase.auth.GoogleAuthProvider();
-
     auth.signInWithRedirect(googleProvider)
-    .then(()=> {
-        console.log('loggeado');
+    .then(function() {
+        console.log("- - - Loggeado - - - - ");
     })
+    .catch(function(e) {
+        console.log(e);
+    })
+    console.log('te loggee');
 }
 
 const signOutWithGoogle = () =>{
     auth.signOut().then(function() {
         name = '';
+        verification();
         // Sign-out successful.
       }).catch(function(error) {
         // An error happened.
@@ -93,6 +97,21 @@ const closePublish = () =>{
 publishBtn.addEventListener('click', processPublish);
 exitBtn.addEventListener('click', closePublish);
 
+const verification = () => {
+    console.log('wena', auth.currentUser);
+    if (auth.currentUser == null) {
+        publishBtn.style.display = 'none';
+        signOutWithGoogleButton.style.display = 'none';
+        console.log('no está loggeado');
+    }
+    else {
+        publishBtn.style.display = 'block';
+        signOutWithGoogleButton.style.display = 'block';
+        console.log('te logeaste');
+    }
+};
+
+
 
 const postRef = db.collection('posts');
 
@@ -105,6 +124,7 @@ postForm.addEventListener("submit", async(event) => {
     upImage= uploadImage.files[0];
     console.log(upImage);
     console.log(auth);
+    console.log(firebase.firestore.FieldValue.serverTimestamp());
 
 
     if(!name || name == null){
@@ -224,8 +244,6 @@ const createChildren = (data) => {
 
 
 
-
-
 /* const updatePost = data => {
     //if (data.date === null) data.date = 
     const post = `<div class="tweet-header">
@@ -253,3 +271,5 @@ db.collection("posts").orderBy('date', 'asc')
         }
     });
 });
+
+verification();
