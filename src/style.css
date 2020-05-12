@@ -227,6 +227,7 @@ https://www.w3schools.com/css/css3_buttons.asp
   display: flex;
   background-color: white;
   justify-content: flex-end;
+  opacity: 0.9;
 }
 
 #content{
