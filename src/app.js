@@ -82,12 +82,16 @@ const processPublish = () =>{
     console.log('me hiciste click');
     publishBtn.style.display = 'none';
     formPublish.style.display = 'block';
+    tweets.style.display = 'none';
+    signOutWithGoogleButton.style.display = 'none';
 };
 
 const closePublish = () =>{
     console.log('Me cerraste man');
     publishBtn.style.display = 'block';
     formPublish.style.display = 'none';
+    tweets.style.display = 'block';
+    signOutWithGoogleButton.style.display = 'block';
     postInput.value = '';
     uploadImage.value = '';
 };
@@ -101,11 +105,14 @@ const verification = () => {
         console.log('No hay currentUser');
         publishBtn.style.display = 'none';
         signOutWithGoogleButton.style.display = 'none';
+        signWithGoogleButton.style.display = 'block';
     }
     else {
         console.log("currentUser: ", auth.currentUser.displayName);
+        signWithGoogleButton.style.display = 'none';
         publishBtn.style.display = 'block';
         signOutWithGoogleButton.style.display = 'block';
+      
     }
 };
 
