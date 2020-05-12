@@ -8,13 +8,15 @@
   <title>Twotter</title>
 </head>
 <body>
-
- 
-  <div id='header'>
-    <button id='signOutGoogle'>LogOut of google</button>
+  
+<div id='header'>
+<!--   https://www.flaticon.es/icono-gratis/google_300221 -->
+    <button id="signWithGoogle">Login with  <img id="icon" src='https://image.flaticon.com/icons/svg/300/300221.svg' alt="x" /></button>
+    <button id='signOutGoogle'>LogOut</button>
   </div>
-  <button id="botonF1">
-    +
+  <button id="botonF1" ><!-- 
+    https://www.flaticon.es/icono-gratis/pluma_695785?term=pluma&page=1&position=21 -->
+    <img id="iconpost" src='https://image.flaticon.com/icons/svg/695/695785.svg' alt="x" />
   </button>
   <div id="content">
     <div id="formpost">
@@ -22,7 +24,7 @@
         x
       </button>
       <form id="postform">
-        <input type="text" id="post-input"> <!-- disabled> -->
+        <input type="text" id="post-input" placeholder="Qué estás pensando?"> <!-- disabled> -->
         <input type="file" id="cover">
         <button id="post-btn"><!-- disabled> -->Post</button>
       </form>
@@ -39,7 +41,6 @@
   </div>
 </div>
 <div id="footer">
-  <button id="signWithGoogle">Login with google</button>
   <button id='goToProfile'>Profile</button>
   <button id='backToFeed'>Feed</button>
 </div>
