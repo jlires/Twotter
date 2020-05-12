@@ -193,7 +193,7 @@ postForm.addEventListener("submit", async(event) => {
             userImage: userImage,
             text: text
         }
-    
+
         postRef.add(post)
         .then(function(docRef){
             console.log("Document written with ID: ", docRef.id);
@@ -206,8 +206,8 @@ postForm.addEventListener("submit", async(event) => {
     } else {
        /*  https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
             const storageChild = storageRef.child(upImage.name);
-            const postImage = storageChild.put(upImage); 
-            
+            const postImage = storageChild.put(upImage);
+
             await new Promise((resolve) => {
                 postImage.on("state_changed", (snapshot) => {
 
@@ -231,7 +231,7 @@ postForm.addEventListener("submit", async(event) => {
                 userImage: userImage,
                 text: text,
                 uploadImage: downloadFile,
-                fileref: fileRef.location.path  
+                fileref: fileRef.location.path
             }
 
             await postRef.add(post)
@@ -241,7 +241,7 @@ postForm.addEventListener("submit", async(event) => {
             .catch(function(error) {
                 console.error("Error adding document: ", error);
             });
-            
+
             postInput.value = '';
             uploadImage.value = '';
 }
@@ -258,7 +258,7 @@ postForm.addEventListener("submit", async(event) => {
 });
 
 
-/* 
+/*
 const getPosts = async() =>{
     let postArray = [];
     let docs = await postRef.get().catch(err => console.log(err));
@@ -268,7 +268,7 @@ const getPosts = async() =>{
 
     createChildren(postArray);
 }; */
-/* 
+/*
 https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
 const createChildren = (data) => {
     if (tweets != null) {
@@ -281,7 +281,7 @@ const createChildren = (data) => {
             let name = `${data.name.split(' ')[0]} ${data.name.split(' ')[1]}`
             if (data.uploadImage == undefined ){
                 const posted = `
-                
+
                 <div class="tweet-wrap">
                 <div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
@@ -320,7 +320,7 @@ const createChildren = (data) => {
 
 
 /* const updatePost = data => {
-    //if (data.date === null) data.date = 
+    //if (data.date === null) data.date =
     const post = `<div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
@@ -385,7 +385,7 @@ auth.onAuthStateChanged((user) => {
                         else {
                             addToProfile(data);
                         }
-                        
+
                     }
                 }
                 if (change.type === "modified") {
@@ -407,10 +407,10 @@ db.collection("posts").orderBy('date', 'asc')
         if (change.type === "added") {
             console.log("Added post: ", change.doc.data());
             createChildren(change.doc.data());
-
         }
         if (change.type === "modified") {
             console.log("Modified post: ", change.doc.data());
+            createChildren(change.doc.data());
         }
         if (change.type === "removed") {
             console.log("Removed post: ", change.doc.data());
