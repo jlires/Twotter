@@ -252,6 +252,7 @@ postForm.addEventListener("submit", async(event) => {
         profileDiv.style.display = 'block';
         backToFeedButton.disabled = false;
     }
+    signOutWithGoogleButton.style.display = 'block';
     publishBtn.style.display = 'block';
     formPublish.style.display = 'none';
 });
@@ -271,6 +272,7 @@ const getPosts = async() =>{
 https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
 const createChildren = (data) => {
     if (tweets != null) {
+
             if (data.uploadImage == undefined ){
                 const posted = `
                 
@@ -284,6 +286,10 @@ const createChildren = (data) => {
                     </div>
                   </div>`
                 tweets.insertAdjacentHTML("afterBegin", posted);
+                if ( auth.currentUser != null && data.email == auth.currentUser.email){
+                    profileDiv.insertAdjacentHTML("afterBegin", posted);
+                }
+
             }
             else{
                 const posted = `
@@ -298,7 +304,9 @@ const createChildren = (data) => {
                     </div>
                   </div>`
                 tweets.insertAdjacentHTML("afterBegin", posted);
-
+                if ( auth.currentUser != null && data.email == auth.currentUser.email){
+                    profileDiv.insertAdjacentHTML("afterBegin", posted);
+                }
             }
         };
 };
@@ -318,7 +326,7 @@ const createChildren = (data) => {
 }
  */
 
-const addToProfileWithImage = (data) => {
+/* const addToProfileWithImage = (data) => {
     profileDiv.insertAdjacentHTML("afterBegin", `
         <div class="tweet-wrap">
             <div class="tweet-header">
@@ -345,7 +353,7 @@ const addToProfile = (data) => {
             </div>
         </div>`
     );
-}
+} */
 
 auth.onAuthStateChanged((user) => {
     console.log("-- Auth state changed ...");
@@ -355,7 +363,7 @@ auth.onAuthStateChanged((user) => {
       // ...
       console.log("-- Estamos loggeados!");
       // ....
-      console.log("Cargando Perfil");
+    /*  console.log("Cargando Perfil");
       db.collection("posts")
         .where('email', '==', auth.currentUser.email)
         .orderBy('date', 'asc')
@@ -381,7 +389,7 @@ auth.onAuthStateChanged((user) => {
                     console.log("Removed OWN post: ", change.doc.data());
                 }
             });
-        });
+        });  */
     } else {
       console.log("-- No hay nadie loggeado!");
     }
@@ -393,6 +401,7 @@ db.collection("posts").orderBy('date', 'asc')
         if (change.type === "added") {
             console.log("Added post: ", change.doc.data());
             createChildren(change.doc.data());
+
         }
         if (change.type === "modified") {
             console.log("Modified post: ", change.doc.data());
