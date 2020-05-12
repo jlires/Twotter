@@ -272,7 +272,12 @@ const getPosts = async() =>{
 https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
 const createChildren = (data) => {
     if (tweets != null) {
-
+            let date = data.date.toDate();
+            let minute = date.getMinutes();
+            let hour = `${date.getHours()}`.padStart(2, '0');
+            let day = date.getDate();
+            let month = date.getMonth();
+            let formattedDate = `${hour}:${minute} at ${day}/${month}`;
             if (data.uploadImage == undefined ){
                 const posted = `
                 
@@ -280,7 +285,7 @@ const createChildren = (data) => {
                 <div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
-                      ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
+                      ${data.name} <span>@${data.email.split("@")[0]}</span><span>${formattedDate}</span>
                       <p>${data.text}</p>
                     </div>
                     </div>
@@ -297,7 +302,7 @@ const createChildren = (data) => {
                 <div class="tweet-header">
                     <img src="${data.userImage}" alt="" class="avator">
                     <div class="tweet-header-info">
-                      ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
+                      ${data.name} <span>@${data.email.split("@")[0]}</span><span>${formattedDate}</span>
                       <p>${data.text}</p>
                       <img src="${data.uploadImage}" style="width: 300px; height: 300px;"/>
                     </div>
