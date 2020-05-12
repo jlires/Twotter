@@ -83,21 +83,44 @@ const storage = firebase.storage();
 const storageRef = storage.ref();
 
 const processPublish = () =>{
+    if( backToFeedButton.style.display == 'block'){
+        console.log('me hiciste click');
+        publishBtn.style.display = 'none';
+        formPublish.style.display = 'block';
+        tweets.style.display = 'none';
+        profileDiv.style.display = 'none';
+        backToFeedButton.disabled = true;
+        signOutWithGoogleButton.style.display = 'none';
+    } else {
     console.log('me hiciste click');
     publishBtn.style.display = 'none';
     formPublish.style.display = 'block';
     tweets.style.display = 'none';
+    goToProfileButton.disabled = true;
     signOutWithGoogleButton.style.display = 'none';
+}
 };
 
 const closePublish = () =>{
+    if( goToProfileButton.style.display == 'block'){
     console.log('Me cerraste man');
     publishBtn.style.display = 'block';
     formPublish.style.display = 'none';
     tweets.style.display = 'block';
     signOutWithGoogleButton.style.display = 'block';
+    goToProfileButton.disabled = false;
     postInput.value = '';
     uploadImage.value = '';
+} else{
+    console.log('Me cerraste man');
+    publishBtn.style.display = 'block';
+    formPublish.style.display = 'none';
+    profileDiv.style.display = 'block';
+    signOutWithGoogleButton.style.display = 'block';
+    backToFeedButton.disabled = false;
+    postInput.value = '';
+    uploadImage.value = '';
+}
 };
 
 publishBtn.addEventListener('click', processPublish);
@@ -222,6 +245,13 @@ postForm.addEventListener("submit", async(event) => {
             postInput.value = '';
             uploadImage.value = '';
 }
+    if(goToProfileButton.style.display == 'block'){
+        tweets.style.display = 'block';
+        goToProfileButton.disabled = false;
+    } else if (backToFeedButton.style.display == 'block') {
+        profileDiv.style.display = 'block';
+        backToFeedButton.disabled = false;
+    }
     publishBtn.style.display = 'block';
     formPublish.style.display = 'none';
 });
