@@ -232,3 +232,16 @@ https://www.w3schools.com/css/css3_buttons.asp
 #content{
   margin-top: 5vh;
 }
+
+#profile {
+  margin-top: 5vh;
+  display: none;
+}
+
+#goToProfile {
+  display: none;
+}
+
+#backToFeed {
+  display: none;
+}

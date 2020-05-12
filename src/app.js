@@ -60,8 +60,11 @@ const signOutWithGoogle = () =>{
       });
 }
 
+
 const signWithGoogleButton = document.getElementById('signWithGoogle');
 const signOutWithGoogleButton = document.getElementById('signOutGoogle');
+const goToProfileButton = document.getElementById('goToProfile');
+const backToFeedButton = document.getElementById('backToFeed');
 signWithGoogleButton.addEventListener('click', signWithGoogle);
 signOutWithGoogleButton.addEventListener('click', signOutWithGoogle);
 
@@ -75,6 +78,7 @@ const exitBtn = document.getElementById('botonF2');
 const formPublish = document.getElementById('formpost');
 const tweets = document.getElementById('all');
 const uploadImage = document.getElementById('cover');
+const profileDiv = document.getElementById('profile');
 const storage = firebase.storage();
 const storageRef = storage.ref();
 
@@ -99,12 +103,34 @@ const closePublish = () =>{
 publishBtn.addEventListener('click', processPublish);
 exitBtn.addEventListener('click', closePublish);
 
+const goToProfile = () => {
+    profileDiv.style.display = 'block';
+    tweets.style.display = 'none';
+    goToProfileButton.style.display = 'none';
+    backToFeedButton.style.display = 'block';
+}
+
+const backToFeed = () => {
+    profileDiv.style.display = 'none';
+    tweets.style.display = 'block';
+    goToProfileButton.style.display = 'block';
+    backToFeedButton.style.display = 'none';
+
+}
+
+goToProfileButton.addEventListener('click', goToProfile);
+backToFeedButton.addEventListener('click', backToFeed);
+
 const verification = () => {
     console.log("Entramos a VERIFICATION");
     if (auth.currentUser === null) {
         console.log('No hay currentUser');
         publishBtn.style.display = 'none';
         signOutWithGoogleButton.style.display = 'none';
+        goToProfileButton.style.display = 'none';
+        profileDiv.style.display = 'none';
+        tweets.style.display = 'block';
+        backToFeedButton.style.display = 'none';
         signWithGoogleButton.style.display = 'block';
     }
     else {
@@ -112,7 +138,7 @@ const verification = () => {
         signWithGoogleButton.style.display = 'none';
         publishBtn.style.display = 'block';
         signOutWithGoogleButton.style.display = 'block';
-      
+        goToProfileButton.style.display = 'block';
     }
 };
 
@@ -262,6 +288,35 @@ const createChildren = (data) => {
 }
  */
 
+const addToProfileWithImage = (data) => {
+    profileDiv.insertAdjacentHTML("afterBegin", `
+        <div class="tweet-wrap">
+            <div class="tweet-header">
+                <img src="${data.userImage}" alt="" class="avator">
+                <div class="tweet-header-info">
+                    ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
+                    <p>${data.text}</p>
+                    <img src="${data.uploadImage}" style="width: 300px; height: 300px;"/>
+                </div>
+            </div>
+        </div>`
+    );
+}
+
+const addToProfile = (data) => {
+    profileDiv.insertAdjacentHTML("afterBegin", `
+        <div class="tweet-wrap">
+            <div class="tweet-header">
+            <img src="${data.userImage}" alt="" class="avator">
+                    <div class="tweet-header-info">
+                    ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
+                    <p>${data.text}</p>
+                </div>
+            </div>
+        </div>`
+    );
+}
+
 auth.onAuthStateChanged((user) => {
     console.log("-- Auth state changed ...");
     verification();
@@ -270,6 +325,33 @@ auth.onAuthStateChanged((user) => {
       // ...
       console.log("-- Estamos loggeados!");
       // ....
+      console.log("Cargando Perfil");
+      db.collection("posts")
+        .where('email', '==', auth.currentUser.email)
+        .orderBy('date', 'asc')
+        .onSnapshot(function(snapshot) {
+            snapshot.docChanges().forEach(function(change) {
+                if (change.type === "added") {
+                    console.log("Added OWN post: ", change.doc.data());
+                    if (auth.currentUser) {
+                        data =  change.doc.data();
+                        if (data.uploadImage) {
+                            addToProfileWithImage(data);
+                        }
+                        else {
+                            addToProfile(data);
+                        }
+                        
+                    }
+                }
+                if (change.type === "modified") {
+                    console.log("Modified OWN post: ", change.doc.data());
+                }
+                if (change.type === "removed") {
+                    console.log("Removed OWN post: ", change.doc.data());
+                }
+            });
+        });
     } else {
       console.log("-- No hay nadie loggeado!");
     }
