@@ -1,75 +1,10 @@
-//* Firebase *//
-// Set the configuration for your app
-var config = {
-  apiKey: "AIzaSyAm_huj1Z2UQORza1NFAtQjF7yi_lPYBiU",
-  authDomain: "twotter-app.firebaseapp.com",
-  databaseURL: "https://twotter-app.firebaseio.com",
-  projectId: "twotter-app",
-  storageBucket: "twotter-app.appspot.com",
-  messagingSenderId: "833362549045",
-  appId: "1:833362549045:web:867a9b7d2f7d2b4367547c",
-  measurementId: "G-EJHW769W4N"
-};
-
-// Initialize Firebase
-firebase.initializeApp(config);
-
-// Set Database
-const db = firebase.firestore();
-const settings = { timestampsInSnapshots: true };
-db.settings(settings);
-
-firebase.firestore().enablePersistence()
-  .catch(function(err) {
-      if (err.code == 'failed-precondition') {
-          // Multiple tabs open, persistence can only be enabled
-          // in one tab at a a time.
-          // ...
-          console.log("failed-precondition");
-      } else if (err.code == 'unimplemented') {
-          // The current browser does not support all of the
-          // features required to enable persistence
-          // ...
-          console.log("unimplemented");
-      }
-  });
-
-var name;
-
-//* Google Auth *//
-const auth = firebase.auth();
-
-
-const signWithGoogle = () =>{
-    const googleProvider =  new firebase.auth.GoogleAuthProvider();
-    auth.signInWithRedirect(googleProvider)
-    .then(function() {
-        console.log("- - - Loggeado - - - - ");
-    })
-    .catch(function(e) {
-        console.log(e);
-    })
-}
-
-const signOutWithGoogle = () =>{
-    auth.signOut().then(function() {
-        name = '';
-        // Sign-out successful.
-      }).catch(function(error) {
-        // An error happened.
-      });
-}
-
-
+////////////////////////////////////////////////////////////////////////////////
+//*                             DOM elements                                 *//
+////////////////////////////////////////////////////////////////////////////////
 const signWithGoogleButton = document.getElementById('signWithGoogle');
 const signOutWithGoogleButton = document.getElementById('signOutGoogle');
 const goToProfileButton = document.getElementById('goToProfile');
 const backToFeedButton = document.getElementById('backToFeed');
-signWithGoogleButton.addEventListener('click', signWithGoogle);
-signOutWithGoogleButton.addEventListener('click', signOutWithGoogle);
-
-
-//* Post messages *//
 const postForm = document.getElementById('postform');
 const postInput = document.getElementById('post-input');
 const postBtn = document.getElementById('post-btn');
@@ -81,28 +16,14 @@ const uploadImage = document.getElementById('cover');
 const profileDiv = document.getElementById('profile');
 const subCheckbox = document.getElementById("subscribeButton");
 const subSwitch = document.getElementById("notificationsBar");
-const storage = firebase.storage();
-const storageRef = storage.ref();
 
 
-//* Image manipulation (Upload)
-uploadImage.addEventListener('change', function(e) {
-  var label	 = uploadImage.nextElementSibling,
-	labelVal = label.querySelector('span').textContent;
-
-	var fileName = '';
-	if(this.files && this.files.length > 1) {
-    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-  } else fileName = e.target.value.split("\\").pop();
-
-	if(fileName) label.querySelector('span').textContent = fileName;
-	else label.querySelector('span').textContent = labelVal;
-});
-
+////////////////////////////////////////////////////////////////////////////////
+//*                             Page interactions                            *//
+////////////////////////////////////////////////////////////////////////////////
 
 const processPublish = () =>{
     if( backToFeedButton.style.display == 'block'){
-        console.log('me hiciste click');
         publishBtn.style.display = 'none';
         formPublish.style.display = 'block';
         tweets.style.display = 'none';
@@ -111,7 +32,6 @@ const processPublish = () =>{
         signOutWithGoogleButton.style.display = 'none';
         subSwitch.style.display = 'none';
     } else {
-        console.log('me hiciste click');
         publishBtn.style.display = 'none';
         formPublish.style.display = 'block';
         tweets.style.display = 'none';
@@ -123,7 +43,6 @@ const processPublish = () =>{
 
 const closePublish = () =>{
     if( goToProfileButton.style.display == 'block'){
-        console.log('Me cerraste man');
         publishBtn.style.display = 'block';
         formPublish.style.display = 'none';
         tweets.style.display = 'block';
@@ -133,7 +52,6 @@ const closePublish = () =>{
         postInput.value = '';
         uploadImage.value = '';
     } else{
-        console.log('Me cerraste man');
         publishBtn.style.display = 'block';
         formPublish.style.display = 'none';
         profileDiv.style.display = 'block';
@@ -165,10 +83,57 @@ const backToFeed = () => {
 goToProfileButton.addEventListener('click', goToProfile);
 backToFeedButton.addEventListener('click', backToFeed);
 
+////////////////////////////////////////////////////////////////////////////////
+//*                             Firebase                                     *//
+////////////////////////////////////////////////////////////////////////////////
+var config = {
+  apiKey: "AIzaSyAm_huj1Z2UQORza1NFAtQjF7yi_lPYBiU",
+  authDomain: "twotter-app.firebaseapp.com",
+  databaseURL: "https://twotter-app.firebaseio.com",
+  projectId: "twotter-app",
+  storageBucket: "twotter-app.appspot.com",
+  messagingSenderId: "833362549045",
+  appId: "1:833362549045:web:867a9b7d2f7d2b4367547c",
+  measurementId: "G-EJHW769W4N"
+};
+
+// Initialize Firebase
+firebase.initializeApp(config);
+
+var name;
+
+////////////////////////////////////////////////////////////////////////////////
+//*                 Firebase Authentication with Google                      *//
+////////////////////////////////////////////////////////////////////////////////
+const auth = firebase.auth();
+
+const signWithGoogle = () =>{
+    const googleProvider =  new firebase.auth.GoogleAuthProvider();
+    auth.signInWithRedirect(googleProvider)
+    .then(function() {
+        console.log("- - - Loggeado - - - - ");
+    })
+    .catch(function(e) {
+        console.log(e);
+    })
+}
+
+const signOutWithGoogle = () =>{
+    auth.signOut().then(function() {
+        name = '';
+        // Sign-out successful.
+      }).catch(function(error) {
+        // An error happened.
+      });
+}
+
+signWithGoogleButton.addEventListener('click', signWithGoogle);
+signOutWithGoogleButton.addEventListener('click', signOutWithGoogle);
+
 const verification = () => {
-    console.log("Entramos a VERIFICATION");
+    console.log("Verificando usuario");
     if (auth.currentUser === null) {
-        console.log('No hay currentUser');
+        console.log('No hay usuario actualmente');
         publishBtn.style.display = 'none';
         signOutWithGoogleButton.style.display = 'none';
         subSwitch.style.display = 'none';
@@ -179,7 +144,7 @@ const verification = () => {
         signWithGoogleButton.style.display = 'block';
     }
     else {
-        console.log("currentUser: ", auth.currentUser.displayName);
+        console.log("Usuario actual: ", auth.currentUser.displayName);
         signWithGoogleButton.style.display = 'none';
         publishBtn.style.display = 'block';
         signOutWithGoogleButton.style.display = 'block';
@@ -188,9 +153,61 @@ const verification = () => {
     }
 };
 
+auth.onAuthStateChanged((user) => {
+    console.log("-- Auth state changed ...");
+    verification();
+    if (user) {
+      console.log("Usuario  Loggeado!");
+    } else {
+      console.log("No hay nadie loggeado!");
+    }
+});
 
+////////////////////////////////////////////////////////////////////////////////
+//*                    Firebase Firestore configuration                      *//
+////////////////////////////////////////////////////////////////////////////////
 
+const db = firebase.firestore();
+const settings = { timestampsInSnapshots: true };
+db.settings(settings);
+
+firebase.firestore().enablePersistence()
+  .catch(function(err) {
+      if (err.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+          console.log("failed-precondition");
+      } else if (err.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+          console.log("unimplemented");
+      }
+  });
+
+////////////////////////////////////////////////////////////////////////////////
+//*                             Post Form                                    *//
+////////////////////////////////////////////////////////////////////////////////
+
+const storage = firebase.storage();
+const storageRef = storage.ref();
 const postRef = db.collection('posts');
+
+
+//* Image manipulation (Upload)
+uploadImage.addEventListener('change', function(e) {
+    var label	 = uploadImage.nextElementSibling,
+  	labelVal = label.querySelector('span').textContent;
+
+  	var fileName = '';
+  	if(this.files && this.files.length > 1) {
+      fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+    } else fileName = e.target.value.split("\\").pop();
+
+  	if(fileName) label.querySelector('span').textContent = fileName;
+  	else label.querySelector('span').textContent = labelVal;
+});
 
 postForm.addEventListener("submit", async(event) => {
     event.preventDefault();
@@ -204,9 +221,11 @@ postForm.addEventListener("submit", async(event) => {
     console.log(firebase.firestore.FieldValue.serverTimestamp());
 
 
-    if(!name || name == null){
+    if(!name || name == null) {
         return alert('Debes ingresar a tu cuenta');
-    } else if (!text.trim()) return alert('Debes escribir algo en el post');
+    } else if (!text.trim()) {
+      return alert('Debes escribir algo en el post');
+    }
 
     if (upImage == undefined) {
         const post = {
@@ -219,55 +238,56 @@ postForm.addEventListener("submit", async(event) => {
 
         postRef.add(post)
         .then(function(docRef){
-            console.log("Document written with ID: ", docRef.id);
+            console.log("Post nuevo con ID: ", docRef.id);
         })
         .catch(function(error) {
-            console.error("Error adding document: ", error);
+            console.error("Error creando el post: ", error);
         });
         postInput.value = '';
 
     } else {
-       /*  https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
-            const storageChild = storageRef.child(upImage.name);
-            const postImage = storageChild.put(upImage);
+      /*  https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
+      const storageChild = storageRef.child(upImage.name);
+      const postImage = storageChild.put(upImage);
 
-            await new Promise((resolve) => {
-                postImage.on("state_changed", (snapshot) => {
+      await new Promise((resolve) => {
+          postImage.on("state_changed", (snapshot) => {
 
-                }, (error) => {
-                    console.log(error);
-                }, async() => {
-                    const downloadURL =  await storageChild.getDownloadURL();
-                    downloadFile = downloadURL;
-                    console.log(downloadFile);
-                    resolve();
-                });
-            });
+          }, (error) => {
+              console.log(error);
+          }, async() => {
+              const downloadURL =  await storageChild.getDownloadURL();
+              downloadFile = downloadURL;
+              console.log(downloadFile);
+              resolve();
+          });
+      });
 
-            const fileRef = await firebase.storage().refFromURL(downloadFile);
+      const fileRef = await firebase.storage().refFromURL(downloadFile);
 
 
-            const post = {
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                name: name,
-                email: email,
-                userImage: userImage,
-                text: text,
-                uploadImage: downloadFile,
-                fileref: fileRef.location.path
-            }
+      const post = {
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+          name: name,
+          email: email,
+          userImage: userImage,
+          text: text,
+          uploadImage: downloadFile,
+          fileref: fileRef.location.path
+      }
 
-            await postRef.add(post)
-            .then(function(docRef){
-                console.log("Document written with ID: ", docRef.id);
-            })
-            .catch(function(error) {
-                console.error("Error adding document: ", error);
-            });
+      await postRef.add(post)
+      .then(function(docRef){
+          console.log("Post nuevo con ID: ", docRef.id);
+      })
+      .catch(function(error) {
+          console.error("Error creando el post: ", error);
+      });
 
-            postInput.value = '';
-            uploadImage.value = '';
-}
+      postInput.value = '';
+      uploadImage.value = '';
+    }
+
     if(goToProfileButton.style.display == 'block'){
         tweets.style.display = 'block';
         goToProfileButton.disabled = false;
@@ -281,150 +301,55 @@ postForm.addEventListener("submit", async(event) => {
     formPublish.style.display = 'none';
 });
 
-
-/*
-const getPosts = async() =>{
-    let postArray = [];
-    let docs = await postRef.get().catch(err => console.log(err));
-    docs.forEach(doc => {
-        postArray.push({"id": doc.id, "data": doc.data()});
-    });
-
-    createChildren(postArray);
-}; */
-/*
-https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
+/* https://www.youtube.com/watch?v=ppajI8xR__k&list=PLolX_BtuGc9RztjopfFSO_xLFsdGg9nBC&index=9 */
 const createChildren = (data) => {
     if (tweets != null) {
-            let date = data.date.toDate();
-            let minute = date.getMinutes();
-            let hour = `${date.getHours()}`.padStart(2, '0');
-            let day = `${date.getDate()}`.padStart(2, '0');
-            let month = `${date.getMonth()}`.padStart(2, '0');
-            let formattedDate = `${day}/${month} at ${hour}:${minute}`;
-            let name = `${data.name.split(' ')[0]} ${data.name.split(' ')[1]}`
-            if (data.uploadImage == undefined ){
-                const posted = `
+        let date = data.date.toDate();
+        let minute = date.getMinutes();
+        let hour = `${date.getHours()}`.padStart(2, '0');
+        let day = `${date.getDate()}`.padStart(2, '0');
+        let month = `${date.getMonth()}`.padStart(2, '0');
+        let formattedDate = `${day}/${month} at ${hour}:${minute}`;
+        let name = `${data.name.split(' ')[0]} ${data.name.split(' ')[1]}`
+        if (data.uploadImage == undefined ) {
+            const posted = `
 
-                <div class="tweet-wrap">
-                <div class="tweet-header">
-                    <img src="${data.userImage}" alt="" class="avator">
-                    <div class="tweet-header-info">
-                      ${name} <span>@${data.email.split("@")[0]}</span><span>${formattedDate}</span>
-                      <p>${data.text}</p>
-                    </div>
-                    </div>
-                  </div>`
-                tweets.insertAdjacentHTML("afterBegin", posted);
-                if ( auth.currentUser != null && data.email == auth.currentUser.email){
-                    profileDiv.insertAdjacentHTML("afterBegin", posted);
-                }
-
-            }
-            else{
-                const posted = `
-                <div class="tweet-wrap">
-                <div class="tweet-header">
-                    <img src="${data.userImage}" alt="" class="avator">
-                    <div class="tweet-header-info">
-                      ${name} <span>@${data.email.split("@")[0]}</span><span>${formattedDate}</span>
-                      <p>${data.text}</p>
-                      </br>
-                      <img src="${data.uploadImage}" style="width: 300px; height: 300px;"/>
-                    </div>
-                    </div>
-                  </div>`
-                tweets.insertAdjacentHTML("afterBegin", posted);
-                if ( auth.currentUser != null && data.email == auth.currentUser.email){
-                    profileDiv.insertAdjacentHTML("afterBegin", posted);
-                }
-            }
-        };
-};
-
-
-
-/* const updatePost = data => {
-    //if (data.date === null) data.date =
-    const post = `<div class="tweet-header">
-                    <img src="${data.userImage}" alt="" class="avator">
-                    <div class="tweet-header-info">
-                      ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
-                      <p>${data.text}</p>
-                    </div>
-                  </div>`
-    tweets.insertAdjacentHTML("afterBegin", post);
-}
- */
-
-/* const addToProfileWithImage = (data) => {
-    profileDiv.insertAdjacentHTML("afterBegin", `
-        <div class="tweet-wrap">
+            <div class="tweet-wrap">
             <div class="tweet-header">
                 <img src="${data.userImage}" alt="" class="avator">
                 <div class="tweet-header-info">
-                    ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
-                    <p>${data.text}</p>
-                    <img src="${data.uploadImage}" style="width: 300px; height: 300px;"/>
+                  ${name} <span>@${data.email.split("@")[0]}</span><span>${formattedDate}</span>
+                  <p>${data.text}</p>
                 </div>
-            </div>
-        </div>`
-    );
-}
+                </div>
+              </div>`
+            tweets.insertAdjacentHTML("afterBegin", posted);
+            if ( auth.currentUser != null && data.email == auth.currentUser.email){
+                profileDiv.insertAdjacentHTML("afterBegin", posted);
+            }
 
-const addToProfile = (data) => {
-    profileDiv.insertAdjacentHTML("afterBegin", `
-        <div class="tweet-wrap">
+        }
+        else {
+            const posted = `
+            <div class="tweet-wrap">
             <div class="tweet-header">
-            <img src="${data.userImage}" alt="" class="avator">
-                    <div class="tweet-header-info">
-                    ${data.name} <span>@${data.email.split("@")[0]}</span><span>${data.date}</span>
-                    <p>${data.text}</p>
+                <img src="${data.userImage}" alt="" class="avator">
+                <div class="tweet-header-info">
+                  ${name} <span>@${data.email.split("@")[0]}</span><span>${formattedDate}</span>
+                  <p>${data.text}</p>
+                  </br>
+                  <img src="${data.uploadImage}" style="width: 300px; height: 300px;"/>
                 </div>
-            </div>
-        </div>`
-    );
-} */
+                </div>
+              </div>`
+            tweets.insertAdjacentHTML("afterBegin", posted);
+            if ( auth.currentUser != null && data.email == auth.currentUser.email){
+                profileDiv.insertAdjacentHTML("afterBegin", posted);
+            }
+        }
+    };
+};
 
-auth.onAuthStateChanged((user) => {
-    console.log("-- Auth state changed ...");
-    verification();
-    if (user) {
-      // User signed in, you can get redirect result here if needed.
-      // ...
-      console.log("-- Estamos loggeados!");
-      // ....
-    /*  console.log("Cargando Perfil");
-      db.collection("posts")
-        .where('email', '==', auth.currentUser.email)
-        .orderBy('date', 'asc')
-        .onSnapshot(function(snapshot) {
-            snapshot.docChanges().forEach(function(change) {
-                if (change.type === "added") {
-                    console.log("Added OWN post: ", change.doc.data());
-                    if (auth.currentUser) {
-                        data =  change.doc.data();
-                        if (data.uploadImage) {
-                            addToProfileWithImage(data);
-                        }
-                        else {
-                            addToProfile(data);
-                        }
-
-                    }
-                }
-                if (change.type === "modified") {
-                    console.log("Modified OWN post: ", change.doc.data());
-                }
-                if (change.type === "removed") {
-                    console.log("Removed OWN post: ", change.doc.data());
-                }
-            });
-        });  */
-    } else {
-      console.log("-- No hay nadie loggeado!");
-    }
-  });
 
 db.collection("posts").orderBy('date', 'asc')
 .onSnapshot(function(snapshot) {
