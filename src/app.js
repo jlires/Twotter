@@ -401,7 +401,6 @@ db.collection("posts").orderBy('date', 'asc')
         if (change.type === "added") {
             console.log("Added post: ", change.doc.data());
             createChildren(change.doc.data());
-
         }
         if (change.type === "modified") {
             console.log("Modified post: ", change.doc.data());
@@ -414,18 +413,67 @@ db.collection("posts").orderBy('date', 'asc')
 
 
 //* Push notifications *//
+let userToken = null;
 
 const messaging = firebase.messaging();
 
 messaging.requestPermission().then(() => {
   return messaging.getToken();
 }).then((token) => {
-  console.log(token);
+  userToken = token;
+  console.log("Token:", token);
+  //* Set current subscription status
+  db.collection("user_subscriptions").where("token", "==", token)
+    .get()
+    .then((snapshot) =>{
+        const subCheckbox = document.getElementById("subscribeButton");
+        if (snapshot.length > 0) {
+          subCheckbox.checked = true;
+        } else {
+          subCheckbox.checked = false;
+        }
+    })
+    .catch(function(error) {
+        console.log("Error obteniendo las subscripciones: ", error);
+    });
 }).catch((err) => {
   console.log("Permission denied", err);
 });
 
 messaging.onMessage((payload) => {
-  console.log('Message received. ', payload);
-  // ...
+  //...
+  console.log(payload);
+});
+
+
+//* Subscribe/Unsubscribe
+const subCheckbox = document.getElementById("subscribeButton");
+subCheckbox.addEventListener("click", async(event) => {
+  console.log(auth);
+  event.preventDefault();
+  const subCheckbox = document.getElementById("subscribeButton");
+  if (subCheckbox.checked == true){
+    // Subscribe
+    db.collection("user_subscriptions").add({
+        user: auth.currentUser.email,
+        token: userToken
+    })
+  } else {
+    // Unsubscribe
+    db.collection("user_subscriptions").where("token", "==", userToken)
+      .get()
+      .then((snapshot) =>{
+          snapshot.forEach(function(doc) {
+              doc.ref.delete.then(() => {
+                console.log("Tokeen eliminado exitosamente!");
+              }).catch(function(error) {
+                console.error("Error eliminando el token: ", error);
+              });
+          });
+      })
+      .catch(function(error) {
+          console.log("Error obteniendo las subscripciones: ", error);
+      });
+  }
+
 });

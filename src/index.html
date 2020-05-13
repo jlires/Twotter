@@ -4,18 +4,22 @@
   <meta name="theme-color" content="#222831">
   <link rel='manifest' href='./manifest.json'>
   <link rel="stylesheet" type="text/css" href="style.css">
-
+  <link rel="apple-touch-icon" sizes="180x180" href="/src/images/icons/apple-touch-icon.png">
   <title>Twotter</title>
 </head>
 <body>
 
-<div id='header'>
-<!--   https://www.flaticon.es/icono-gratis/google_300221 -->
+  <div id='header'>
+    <label class="switch">
+      <input id="subscribeButton" type="checkbox">
+      <span class="slider"></span>
+    </label>
+    <!-- https://www.flaticon.es/icono-gratis/google_300221 -->
     <button id="signWithGoogle">Login with  <img id="icon" src='https://image.flaticon.com/icons/svg/300/300221.svg' alt="x" /></button>
     <button id='signOutGoogle'>LogOut</button>
   </div>
-  <button id="botonF1" ><!--
-    https://www.flaticon.es/icono-gratis/pluma_695785?term=pluma&page=1&position=21 -->
+  <button id="botonF1" >
+    <!-- https://www.flaticon.es/icono-gratis/pluma_695785?term=pluma&page=1&position=21 -->
     <img id="iconpost" src='https://image.flaticon.com/icons/svg/695/695785.svg' alt="x" />
   </button>
   <div id="content">
@@ -24,20 +28,21 @@
         x
       </button>
       <form id="postform">
-        <input type="text" id="post-input" placeholder="Qué estás pensando?"> <!-- disabled> -->
+        <textarea id="post-input" placeholder="Qué estás pensando?"></textarea> <!-- disabled> -->
         <input type="file" id="cover">
-        <button id="post-btn"><!-- disabled> -->Post</button>
+        <button id="post-btn"><!-- disabled> -->></button>
       </form>
     </div>
-    <div id="profile">
-
+    <div id="profile">º
       <div id="formpost">
         <button id="botonF2">
           x
         </button>
       </div>
     </div>
-    <div id="all">
+    <div id="all"></div>
+
+
   </div>
 </div>
 <div id="footer">
@@ -59,10 +64,6 @@
     <script>
        if("serviceWorker" in navigator) {
          navigator.serviceWorker.register("/sw.js")
-           .then(function() {
-                 console.log("Service Worker Registered");
-           });
-         navigator.serviceWorker.register("/firebase-messaging-sw.js")
            .then(function() {
                  console.log("Service Worker Registered");
            });
