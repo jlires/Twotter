@@ -6,7 +6,7 @@ const db = admin.firestore();
 
 exports.createPost = functions.firestore.document('posts/{postId}').onCreate((snap, context) => {
   var newValue = snap.data();
-  var message = "New Post Added : " + newValue.text;
+  var message = newValue.email + ": " + newValue.text;
   pushMessage(message);
   return true;
 });

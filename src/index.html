@@ -4,16 +4,28 @@
   <meta name="theme-color" content="#222831">
   <link rel='manifest' href='./manifest.json'>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="fawesome.css">
   <link rel="apple-touch-icon" sizes="180x180" href="/src/images/icons/apple-touch-icon.png">
   <title>Twotter</title>
 </head>
 <body>
 
-  <div id='header'>
-    <label id="subSwitch" class="switch">
-      <input id="subscribeButton" type="checkbox">
-      <span class="slider"></span>
-    </label>
+  <div id="header">
+    <div id="menuBar">
+      <button id='goToProfile'><i class="fa fa-user"></i></button>
+      <button id='backToFeed'><i class="fa fa-comments"></i></button>
+    </div>
+    <div id="notificationsBar">
+      <div style="display: inline-block;">
+        <span style="margin: 0;padding: 0;border: none;background-color: transparent;box-shadow: none;font-size: 30px;"><i class="fa fa-bell"></i></span>
+      </div>
+      <div style="display: inline-block;">
+        <label id="subSwitch" class="switch">
+          <input id="subscribeButton" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
     <!-- https://www.flaticon.es/icono-gratis/google_300221 -->
     <button id="signWithGoogle">Login with  <img id="icon" src='https://image.flaticon.com/icons/svg/300/300221.svg' alt="x" /></button>
     <button id='signOutGoogle'>LogOut</button>
@@ -24,13 +36,17 @@
   </button>
   <div id="content">
     <div id="formpost">
-      <button id="botonF2">
-        x
-      </button>
+      <button id="botonF2"><i class="fa fa-undo"></i></button>
       <form id="postform">
         <textarea id="post-input" placeholder="Qué estás pensando?"></textarea> <!-- disabled> -->
-        <input type="file" id="cover">
-        <button id="post-btn"><!-- disabled> -->></button>
+        <div id="postOptions">
+          <button id="post-btn"><i class="fa fa-paper-plane"></i></button>
+          <input type="file" name="file" id="cover" class="inputFile" />
+          <label for="cover">
+            <i class="fa fa-paperclip"></i>
+            <span>Sube una imagen<span>
+          </label>
+        </div>
       </form>
     </div>
     <div id="profile">º
@@ -42,23 +58,16 @@
     </div>
     <div id="all"></div>
 
-
   </div>
 </div>
-<div id="footer">
-  <button id='goToProfile'>Profile</button>
-  <button id='backToFeed'>Feed</button>
-</div>
+
 
   <script src="/__/firebase/7.14.3/firebase-app.js"></script>
   <script src="/__/firebase/7.14.3/firebase-auth.js"></script>
 
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="/__/firebase/7.14.3/firebase-analytics.js"></script>
-
   <!-- Initialize Firebase -->
   <script src="/__/firebase/init.js"></script>
+
   <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-storage.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
     <script>

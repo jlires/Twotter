@@ -80,9 +80,25 @@ const tweets = document.getElementById('all');
 const uploadImage = document.getElementById('cover');
 const profileDiv = document.getElementById('profile');
 const subCheckbox = document.getElementById("subscribeButton");
-const subSwitch = document.getElementById("subSwitch");
+const subSwitch = document.getElementById("notificationsBar");
 const storage = firebase.storage();
 const storageRef = storage.ref();
+
+
+//* Image manipulation (Upload)
+uploadImage.addEventListener('change', function(e) {
+  var label	 = uploadImage.nextElementSibling,
+	labelVal = label.querySelector('span').textContent;
+
+	var fileName = '';
+	if(this.files && this.files.length > 1) {
+    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+  } else fileName = e.target.value.split("\\").pop();
+
+	if(fileName) label.querySelector('span').textContent = fileName;
+	else label.querySelector('span').textContent = labelVal;
+});
+
 
 const processPublish = () =>{
     if( backToFeedButton.style.display == 'block'){
@@ -260,6 +276,7 @@ postForm.addEventListener("submit", async(event) => {
         backToFeedButton.disabled = false;
     }
     signOutWithGoogleButton.style.display = 'block';
+    subSwitch.style.display = 'block';
     publishBtn.style.display = 'block';
     formPublish.style.display = 'none';
 });
@@ -284,7 +301,7 @@ const createChildren = (data) => {
             let hour = `${date.getHours()}`.padStart(2, '0');
             let day = `${date.getDate()}`.padStart(2, '0');
             let month = `${date.getMonth()}`.padStart(2, '0');
-            let formattedDate = `${hour}:${minute} at ${day}/${month}`;
+            let formattedDate = `${day}/${month} at ${hour}:${minute}`;
             let name = `${data.name.split(' ')[0]} ${data.name.split(' ')[1]}`
             if (data.uploadImage == undefined ){
                 const posted = `
@@ -312,6 +329,7 @@ const createChildren = (data) => {
                     <div class="tweet-header-info">
                       ${name} <span>@${data.email.split("@")[0]}</span><span>${formattedDate}</span>
                       <p>${data.text}</p>
+                      </br>
                       <img src="${data.uploadImage}" style="width: 300px; height: 300px;"/>
                     </div>
                     </div>
@@ -441,7 +459,7 @@ messaging.requestPermission().then(() => {
     .get()
     .then((snapshot) =>{
         const subCheckbox = document.getElementById("subscribeButton");
-        if (snapshot.length > 0) {
+        if (snapshot.docs.length > 0) {
           subCheckbox.checked = true;
         } else {
           subCheckbox.checked = false;
@@ -461,8 +479,7 @@ messaging.onMessage((payload) => {
 
 
 //* Subscribe/Unsubscribe
-subCheckbox.addEventListener("click", async(event) => {
-  console.log(auth);
+subCheckbox.addEventListener("change", async(event) => {
   event.preventDefault();
   const subCheckbox = document.getElementById("subscribeButton");
   if (subCheckbox.checked == true){
@@ -477,11 +494,7 @@ subCheckbox.addEventListener("click", async(event) => {
       .get()
       .then((snapshot) =>{
           snapshot.forEach(function(doc) {
-              doc.ref.delete.then(() => {
-                console.log("Tokeen eliminado exitosamente!");
-              }).catch(function(error) {
-                console.error("Error eliminando el token: ", error);
-              });
+              firebase.firestore().batch().delete(doc.ref);
           });
       })
       .catch(function(error) {

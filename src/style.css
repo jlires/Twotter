@@ -106,6 +106,7 @@ img {
   .tweet-header-info p {
     font-weight:normal;
     margin-top: 5px;
+    font-size: 1.5em;
 
   }
 
@@ -132,6 +133,7 @@ img {
   height: 60px;
   border-radius: 100%;
   background-color: #0c7489;
+  color: white;
   right: 0;
   bottom: 0;
   position: fixed;
@@ -143,16 +145,81 @@ img {
 }
 
 #botonF2 {
-  width: 25px;
-  height: 25px;
+  width: 60px;
+  height: 60px;
   border-radius: 100%;
   background-color: #0c7489;
-  right: 8px;
-  top: 50px;
+  right: 0;
+  bottom: 0;
   position: fixed;
-  font-size: 20px;
+  margin-right: 16px;
+  margin-bottom: 85px;
+  font-size: 36px;
   border: none;
+  z-index: 2;
+  color: white;
 }
+
+.inputFile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputFile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: #0c7489;
+    display: inline-block;
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.inputFile:focus + label,
+.inputFile + label:hover {
+    background-color: #0c7489;
+}
+
+.inputFile + label * {
+	pointer-events: none;
+}
+
+.inputFile + label span {
+  max-width: 20px; */
+    word-wrap: wrap;
+    /* word-break: break-all; */
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100px;
+    /* display: inline-block; */
+}
+.inputFile + label * {
+    pointer-events: none;
+}
+
+.inputFile + label span {
+  word-wrap: wrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100px;
+  background-color: transparent;
+  display: inline-block;
+  padding: 0px;
+  border-radius: 5px;
+  font-size: 20px;
+  text-align: center;
+  margin: 0;
+  box-shadow: none;
+}
+
 
 
 #formpost{
@@ -173,11 +240,6 @@ img {
   padding: 10px;
   width: 100%;
 
-}
-
-#cover{
-  width: 100%;
-  margin-bottom: 20px;
 }
 
 #footer {
@@ -221,7 +283,7 @@ https://www.w3schools.com/css/css3_buttons.asp
   height: 5vh;
   display: flex;
   background-color: white;
-  justify-content: flex-end;
+  justify-content: space-between;
   opacity: 0.9;
 }
 
@@ -242,6 +304,7 @@ https://www.w3schools.com/css/css3_buttons.asp
   font-size: 16px;
   padding: 5px 20px;
   display: none;
+  height: 100%;
 }
 
 #backToFeed {
@@ -252,6 +315,7 @@ https://www.w3schools.com/css/css3_buttons.asp
   font-size: 16px;
   padding: 5px 20px;
   display: none;
+  height: 100%;
 }
 
 
@@ -293,13 +357,14 @@ https://www.w3schools.com/css/css3_buttons.asp
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+  border-radius: 4px
 }
 
 input:checked + .slider {
@@ -311,9 +376,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
 }
 
 /* Rounded sliders */
@@ -327,18 +392,20 @@ input:checked + .slider:before {
 
 
 #post-btn {
- width: 60px;
- height: 60px;
- border-radius: 100%;
- background-color: #0c7489;
- right: 0;
- bottom: 0;
- position: fixed;
- margin-right: 16px;
- margin-bottom: 85px;
- font-size: 36px;
- border: none;
- z-index: 2;
+  width: 60px;
+  height: 65px;
+  border-radius: 20px;
+  background-color: #0c7489;
+  right: 0;
+  bottom: 0;
+  margin-right: 16px;
+  margin-bottom: 85px;
+  font-size: 36px;
+  border: none;
+  z-index: 2;
+  color: white;
+  right: 0;
+  margin-left: 10px;
 }
 
 #post-input {
@@ -349,4 +416,12 @@ input:checked + .slider:before {
 #footer button {
   width: 100%;
   height: 100%;
+}
+
+#postOptions input,label,button {
+  float:right
+}
+
+#all {
+  margin-top: 10vh;
 }
