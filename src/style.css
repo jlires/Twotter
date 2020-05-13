@@ -110,10 +110,6 @@ img {
   }
 
   @media screen and (max-width:430px){
-    body {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
     .tweet-header {
       flex-direction:column;
     }
@@ -140,7 +136,7 @@ img {
   bottom: 0;
   position: fixed;
   margin-right: 16px;
-  margin-bottom: 50px;
+  margin-bottom: 65px;
   font-size: 36px;
   border: none;
   z-index: 2;
@@ -162,8 +158,8 @@ img {
 #formpost{
   padding: 10px;
   margin-bottom: 5px;
- 
-  margin-top: 30vh;
+
+  margin-top: 12vh;
   display: none;
 
 }
@@ -190,13 +186,13 @@ img {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 5vh;
+  height: 8vh;
   display: flex;
   background-color: black;
   align-items: center;
   justify-content: center;
 }
-/* 
+/*
 https://www.w3schools.com/css/css3_buttons.asp
  */
 #signWithGoogle{
@@ -257,4 +253,30 @@ https://www.w3schools.com/css/css3_buttons.asp
   font-size: 16px;
   padding: 5px 20px;
   display: none;
+}
+
+
+#post-btn {
+ width: 60px;
+ height: 60px;
+ border-radius: 100%;
+ background-color: #0c7489;
+ right: 0;
+ bottom: 0;
+ position: fixed;
+ margin-right: 16px;
+ margin-bottom: 65px;
+ font-size: 36px;
+ border: none;
+ z-index: 2;
+}
+
+#post-input {
+  height: 50vh;
+  font-size: large;
+}
+
+#footer button {
+  width: 100%;
+  height: 100%;
 }
