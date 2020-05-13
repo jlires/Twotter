@@ -136,7 +136,7 @@ img {
   bottom: 0;
   position: fixed;
   margin-right: 16px;
-  margin-bottom: 65px;
+  margin-bottom: 85px;
   font-size: 36px;
   border: none;
   z-index: 2;
@@ -335,7 +335,7 @@ input:checked + .slider:before {
  bottom: 0;
  position: fixed;
  margin-right: 16px;
- margin-bottom: 65px;
+ margin-bottom: 85px;
  font-size: 36px;
  border: none;
  z-index: 2;

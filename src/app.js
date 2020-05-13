@@ -79,6 +79,8 @@ const formPublish = document.getElementById('formpost');
 const tweets = document.getElementById('all');
 const uploadImage = document.getElementById('cover');
 const profileDiv = document.getElementById('profile');
+const subCheckbox = document.getElementById("subscribeButton");
+const subSwitch = document.getElementById("subSwitch");
 const storage = firebase.storage();
 const storageRef = storage.ref();
 
@@ -91,36 +93,40 @@ const processPublish = () =>{
         profileDiv.style.display = 'none';
         backToFeedButton.disabled = true;
         signOutWithGoogleButton.style.display = 'none';
+        subSwitch.style.display = 'none';
     } else {
-    console.log('me hiciste click');
-    publishBtn.style.display = 'none';
-    formPublish.style.display = 'block';
-    tweets.style.display = 'none';
-    goToProfileButton.disabled = true;
-    signOutWithGoogleButton.style.display = 'none';
+        console.log('me hiciste click');
+        publishBtn.style.display = 'none';
+        formPublish.style.display = 'block';
+        tweets.style.display = 'none';
+        goToProfileButton.disabled = true;
+        signOutWithGoogleButton.style.display = 'none';
+        subSwitch.style.display = 'none';
 }
 };
 
 const closePublish = () =>{
     if( goToProfileButton.style.display == 'block'){
-    console.log('Me cerraste man');
-    publishBtn.style.display = 'block';
-    formPublish.style.display = 'none';
-    tweets.style.display = 'block';
-    signOutWithGoogleButton.style.display = 'block';
-    goToProfileButton.disabled = false;
-    postInput.value = '';
-    uploadImage.value = '';
-} else{
-    console.log('Me cerraste man');
-    publishBtn.style.display = 'block';
-    formPublish.style.display = 'none';
-    profileDiv.style.display = 'block';
-    signOutWithGoogleButton.style.display = 'block';
-    backToFeedButton.disabled = false;
-    postInput.value = '';
-    uploadImage.value = '';
-}
+        console.log('Me cerraste man');
+        publishBtn.style.display = 'block';
+        formPublish.style.display = 'none';
+        tweets.style.display = 'block';
+        signOutWithGoogleButton.style.display = 'block';
+        subSwitch.style.display = 'block';
+        goToProfileButton.disabled = false;
+        postInput.value = '';
+        uploadImage.value = '';
+    } else{
+        console.log('Me cerraste man');
+        publishBtn.style.display = 'block';
+        formPublish.style.display = 'none';
+        profileDiv.style.display = 'block';
+        signOutWithGoogleButton.style.display = 'block';
+        subSwitch.style.display = 'block';
+        backToFeedButton.disabled = false;
+        postInput.value = '';
+        uploadImage.value = '';
+    }
 };
 
 publishBtn.addEventListener('click', processPublish);
@@ -138,7 +144,6 @@ const backToFeed = () => {
     tweets.style.display = 'block';
     goToProfileButton.style.display = 'block';
     backToFeedButton.style.display = 'none';
-
 }
 
 goToProfileButton.addEventListener('click', goToProfile);
@@ -150,6 +155,7 @@ const verification = () => {
         console.log('No hay currentUser');
         publishBtn.style.display = 'none';
         signOutWithGoogleButton.style.display = 'none';
+        subSwitch.style.display = 'none';
         goToProfileButton.style.display = 'none';
         profileDiv.style.display = 'none';
         tweets.style.display = 'block';
@@ -161,6 +167,7 @@ const verification = () => {
         signWithGoogleButton.style.display = 'none';
         publishBtn.style.display = 'block';
         signOutWithGoogleButton.style.display = 'block';
+        subSwitch.style.display = 'block';
         goToProfileButton.style.display = 'block';
     }
 };
@@ -454,7 +461,6 @@ messaging.onMessage((payload) => {
 
 
 //* Subscribe/Unsubscribe
-const subCheckbox = document.getElementById("subscribeButton");
 subCheckbox.addEventListener("click", async(event) => {
   console.log(auth);
   event.preventDefault();
