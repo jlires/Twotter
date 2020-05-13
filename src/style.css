@@ -425,3 +425,35 @@ input:checked + .slider:before {
 #all {
   margin-top: 10vh;
 }
+
+
+#installform{
+  background-color: green;
+  border: 1px solid black;
+  max-width: 300px;
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#buttonAdd{
+    background-color: #13505b; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    float: left;
+}
+
+
+#Cancel{
+  background-color: #13505b; /* Green */
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  float: right;
+}
