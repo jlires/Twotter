@@ -15,22 +15,12 @@ messaging.setBackgroundMessageHandler(function(payload) {
   const notificationTitle = payload.title;
   const notificationOptions = {
     body: payload.message
-    icon:
   };
 
   return self.registration.showNotification(notificationTitle,
     notificationOptions);
 });
 
-self.addEventListener('notificationclick', function(e) {
-  var notification = e.notification;
-  var primaryKey = notification.data.primaryKey;
-  var action = e.action;
-
-  if (action === 'close') {
-    notification.close();
-  } else {
-    clients.openWindow('http://twotter-app.web.app');
-    notification.close();
-  }
-});
+self.addEventListener('notificationclick', function(event) {
+  clients.openWindow(event.notification.data.url);
+}, false);

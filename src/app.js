@@ -350,6 +350,10 @@ const createChildren = (data) => {
     };
 };
 
+////////////////////////////////////////////////////////////////////////////////
+//*                             Post List                                    *//
+////////////////////////////////////////////////////////////////////////////////
+
 
 db.collection("posts").orderBy('date', 'asc')
 .onSnapshot(function(snapshot) {
@@ -369,11 +373,13 @@ db.collection("posts").orderBy('date', 'asc')
 });
 
 
-//* Push notifications *//
+////////////////////////////////////////////////////////////////////////////////
+//*                        Push Notifications                                *//
+////////////////////////////////////////////////////////////////////////////////
 let userToken = null;
-
 const messaging = firebase.messaging();
 
+//* Ask for permission to post notifications
 messaging.requestPermission().then(() => {
   return messaging.getToken();
 }).then((token) => {
@@ -397,13 +403,13 @@ messaging.requestPermission().then(() => {
   console.log("Permission denied", err);
 });
 
+//* In app message handling
 messaging.onMessage((payload) => {
-  //...
   console.log(payload);
 });
 
 
-//* Subscribe/Unsubscribe
+//* Subscribe/Unsubscribe from post notifications
 subCheckbox.addEventListener("change", async(event) => {
   event.preventDefault();
   const subCheckbox = document.getElementById("subscribeButton");

@@ -16,6 +16,9 @@ function pushMessage(message) {
     notification: {
       title: "Nuevo post",
       body: message,
+      data: {
+        url: "https://twotter-app.web.app"
+      }
     }
   };
 
