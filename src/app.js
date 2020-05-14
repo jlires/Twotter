@@ -428,3 +428,65 @@ subCheckbox.addEventListener("change", async(event) => {
   }
 
 });
+
+
+const cancelinstallation = document.getElementById('Cancel');
+
+const closeInstallation = () =>{
+    const formInstall = document.getElementById('installform');
+    formInstall.style.display = 'none';
+};
+
+
+cancelinstallation.addEventListener('click', closeInstallation);
+
+window.addEventListener('appinstalled', (evt) => {
+  console.log('a2hs installed');
+  const formInstall = document.getElementById('installform');
+    formInstall.style.display = 'none';
+
+});
+
+window.addEventListener('load', () => {
+  if (navigator.standalone) {
+    console.log('Launched: Installed (iOS)');
+  } else if (matchMedia('(display-mode: standalone)').matches) {
+    console.log('Launched: Installed');
+  } else {
+    console.log('Launched: Browser Tab');
+  }
+});
+
+window.onload = (e) => { 
+    // Declare init HTML elements
+    const formInstall = document.getElementById('installform');
+    formInstall.style.display = 'none';
+    const buttonAdd = document.querySelector('#buttonAdd');
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      formInstall.style.display = 'block';
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+    });
+
+    // Add event click function for Add button
+    buttonAdd.addEventListener('click', (e) => {
+        const formInstall = document.getElementById('installform');
+        formInstall.style.display = 'none';
+      // Show the prompt
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice
+        .then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
+        });
+    });
+  } 

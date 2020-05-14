@@ -110,6 +110,12 @@ img {
 
   }
 
+  @media all and (display-mode: fullscreen) {
+    body {
+      background-color:white;
+    }
+  }
+
   @media screen and (max-width:430px){
     .tweet-header {
       flex-direction:column;
@@ -425,3 +431,39 @@ input:checked + .slider:before {
 #all {
   margin-top: 10vh;
 }
+
+#installform{
+  background-color: #0c7489;
+  border: 1px solid black;
+  max-width: 300px;
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#buttonAdd{
+    background-color: #13505b; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    float: left;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+
+#Cancel{
+  background-color: #13505b; /* Green */
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  float: right;
+  margin-top: 30px;
+  margin-left: 12px;
+}
+
