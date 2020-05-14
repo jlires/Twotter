@@ -429,15 +429,7 @@ subCheckbox.addEventListener("change", async(event) => {
 
 });
 
-const cancelinstallation = document.getElementById('Cancel');
 
-const closeInstallation = () =>{
-    const formInstall = document.getElementById('installform');
-    formInstall.style.display = 'none';
-};
-
-
-cancelinstallation.addEventListener('click', closeInstallation);
 
 window.onload = (e) => { 
     // Declare init HTML elements
@@ -453,8 +445,6 @@ window.onload = (e) => {
 
     // Add event click function for Add button
     buttonAdd.addEventListener('click', (e) => {
-        const formInstall = document.getElementById('installform');
-        formInstall.style.display = 'none';
       // Show the prompt
       deferredPrompt.prompt();
       // Wait for the user to respond to the prompt
